@@ -63,7 +63,7 @@ Vue.component('gc-timeslider', {
   },
   template: `<div :id="this.gcWidgetId" class="">
 
-                <p class="gc-options-title is-size-6 is-orange" 
+                <p :class="['gc-options-title', 'is-size-6', gcWidgetCollapsed ? 'is-grey' : 'is-orange']" 
                   style="cursor: pointer; margin-bottom: 0.5em;"    
                   v-on:click="toggleTimeslider" 
                   v-show="availableOptions.includes('widgetTitle')">
@@ -72,8 +72,9 @@ Vue.component('gc-timeslider', {
                 </p>
 
                 <!-- timesilder container -->
-                <div :class="[!gcWidgetCollapsed ? '': 'is-hidden']" style="width: 100%;">
-                  <div style="display: flex;">
+                <div :class="[!gcWidgetCollapsed ? '': 'is-hidden']" style="width: 100%; margin-bottom: 1em;">
+
+                  <div class="is-flex">
                     <button :class="[isPlaying ? 'is-active' : '', 'button', 'is-light', 'is-orange']" 
                             v-on:click="startPauseVideo()" v-show="this.availableOptions.includes('playButton')">
                       <i class="fas fa-play" v-if="!this.isPlaying"></i>
@@ -136,7 +137,7 @@ Vue.component('gc-timeslider', {
     timeseries: {
       get: function () { 
         console.debug("timeseries() getter");
-        console.debug(this.gcTimeseries);
+        // console.debug(this.gcTimeseries);
         return this.gcTimeseries;
       },
     },
@@ -174,8 +175,10 @@ Vue.component('gc-timeslider', {
   watch: {
     gcTimeseries (newValue, oldValue) {
       //select the last one if not set through this.currentTimeSeriesIndex
-      if (this.currentTimeseriesIndex < 0 && this.timeseries.length > 0) {
+      //if (this.currentTimeseriesIndex < 0 && this.timeseries.length > 0) {
+      if (this.timeseries.length > 0) {
         this.selectedDate = this.timeseries[this.timeseries.length-1].date;
+        this.currentTimeseriesIndex = this.timeseries.length-1;
       }
     },
     currentLanguage(newValue, oldValue) {
