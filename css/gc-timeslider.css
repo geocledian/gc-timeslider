@@ -1,21 +1,4 @@
-.gc-options-title > i {
-    transform: rotate(0deg);
-    transition: all 0.15s ease-in;
-}
-.gc-options-title:hover {
-    color:#ff9800  !important;
-}
-.gc-options-title > i.is-active {
-    color: #9D9D9C !important;
-    transform: rotate(180deg);
-    transition: all 0.15s ease-in;
-}
-.button {
-    border-width: 1px !important;
-    border-style: solid !important;
-    border-color: rgb(216, 216, 216) !important;
-    margin: 3px !important;
-}
+@import '../../gc-styles/gc-style.css';
 
 #timeSliderDiv > div > .button {
     font-size: 0.8rem!important;
@@ -29,17 +12,3 @@
     padding-bottom: calc(0.5em - 1px); /* align with small buttons */
     width: 100%;
 }
-
-input[type="range"].slider {
-    margin-top:  3px !important;
-    margin-bottom: 0!important;
-    margin-left: 10px!important;
-    margin-right: 10px!important;
-}
-
-input[type=range].slider.is-orange::-moz-range-track{background: #ff9800;}
-input[type=range].slider.is-orange::-webkit-slider-runnable-track{background:#ff9800}
-input[type=range].slider.is-orange::-ms-track{background:#ff9800!important}
-input[type=range].slider.is-orange::-ms-fill-lower{background:#ff9800}
-input[type=range].slider.is-orange .has-output-tooltip+output,
-input[type=range].slider.is-orange.has-output+output{background-color:#ff9800;color:rgba(0,0,0,.7)}
