@@ -9,22 +9,36 @@
 //language strings
 const gcTimesliderLocales = {
   "en": {
-    "options": { "title": "Timeslider" },
-    "labels" : {
-      "date" : "Date",
+    "options": {
+      "title": "Timeslider"
+    },
+    "labels": {
+      "date": "Date",
       "no_data": "Sorry, no data available!",
-      "images" : "images",
-      "of" : "of",
+      "images": "images",
+      "of": "of",
     }
-
   },
   "de": {
-    "options": { "title": "Zeitreihe" },
-    "labels" : {
-      "date" : "Datum",
+    "options": {
+      "title": "Zeitreihe"
+    },
+    "labels": {
+      "date": "Datum",
       "no_data": "Leider keine Daten verfügbar!",
-      "images" : "Aufnahmen",
-      "of" : "von",
+      "images": "Aufnahmen",
+      "of": "von",
+    }
+  },
+  "lt": {
+    "options": {
+      "title": "Laiko eilutės"
+    },
+    "labels": {
+      "date": "Data",
+      "no_data": "Atsiprašome, duomenų nėra!",
+      "images": "Indeksų žemėlapis",
+      "of": "iš",
     }
   },
 }
@@ -36,11 +50,13 @@ Vue.component('gc-timeslider', {
       default: 'timeslider1',
       required: true
     },
-    gcTimeseries: { 
-      type: Array, 
-      default: function () { return [] }
+    gcTimeseries: {
+      type: Array,
+      default: function () {
+        return []
+      }
     },
-    gcSelectedDate: {      
+    gcSelectedDate: {
       type: String,
       default: ''
     },
@@ -110,14 +126,14 @@ Vue.component('gc-timeslider', {
   data: function () {
     console.debug("timeslider! - data()");
     return {
-        currentTimeseriesIndex: -1,
-        //video
-        isPlaying: false,
-        myTimer: {},
-        currentTimeSliderPosition: 0,
+      currentTimeseriesIndex: -1,
+      //video
+      isPlaying: false,
+      myTimer: {},
+      currentTimeSliderPosition: 0,
     }
   },
-  i18n: { 
+  i18n: {
     locale: this.currentLanguage,
     messages: gcTimesliderLocales
   },
@@ -128,44 +144,43 @@ Vue.component('gc-timeslider', {
   /* when vue component is mounted (ready) on DOM node */
   mounted: function () {
     console.debug("timeslider! - mounted()");
-    
+
     try {
       this.changeLanguage();
     } catch (ex) {}
   },
   computed: {
     timeseries: {
-      get: function () { 
+      get: function () {
         console.debug("timeseries() getter");
         // console.debug(this.gcTimeseries);
         return this.gcTimeseries;
       },
     },
     availableOptions: {
-      get: function() {
+      get: function () {
         return (this.gcAvailableOptions.split(","));
       }
     },
     currentLanguage: {
-      get: function() {
+      get: function () {
         // will always reflect prop's value 
         return this.gcLanguage;
       },
     },
     selectedDate: {
-      get: function() {
+      get: function () {
         return this.gcSelectedDate;
       },
-      set: function(value) {
-        console.debug("selectedDate - setter: "+value);
+      set: function (value) {
+        console.debug("selectedDate - setter: " + value);
         // date to index
-        let idx = this.timeseries.indexOf(this.timeseries.filter(t=>t.date == new Date(value).simpleDate() )[0]);
+        let idx = this.timeseries.indexOf(this.timeseries.filter(t => t.date == new Date(value).simpleDate())[0]);
         if (idx >= 0) {
           // changing the index will change the image (if date is available)
           this.currentTimeseriesIndex = idx;
-        }
-        else {
-          this.currentTimeseriesIndex = this.timeseries.length-1; // select latest element
+        } else {
+          this.currentTimeseriesIndex = this.timeseries.length - 1; // select latest element
         }
         // emitting to root instance 
         this.$root.$emit("queryDateChange", value);
@@ -173,12 +188,12 @@ Vue.component('gc-timeslider', {
     },
   },
   watch: {
-    gcTimeseries (newValue, oldValue) {
+    gcTimeseries(newValue, oldValue) {
       //select the last one if not set through this.currentTimeSeriesIndex
       //if (this.currentTimeseriesIndex < 0 && this.timeseries.length > 0) {
       if (this.timeseries.length > 0) {
-        this.selectedDate = this.timeseries[this.timeseries.length-1].date;
-        this.currentTimeseriesIndex = this.timeseries.length-1;
+        this.selectedDate = this.timeseries[this.timeseries.length - 1].date;
+        this.currentTimeseriesIndex = this.timeseries.length - 1;
       }
     },
     currentLanguage(newValue, oldValue) {
@@ -189,7 +204,7 @@ Vue.component('gc-timeslider', {
       //set date
       this.selectedDate = newValue;
     },
-    currentTimeseriesIndex (newValue, oldValue) {
+    currentTimeseriesIndex(newValue, oldValue) {
       // index to date
       let newDate;
       if (this.currentTimeseriesIndex >= 0 && this.timeseries.length > 0) {
@@ -198,7 +213,7 @@ Vue.component('gc-timeslider', {
       }
     }
   },
-  methods: {  
+  methods: {
     toggleTimeslider() {
       this.gcWidgetCollapsed = !this.gcWidgetCollapsed;
     },
@@ -209,7 +224,7 @@ Vue.component('gc-timeslider', {
     },
     getCurrentIndex() {
       if (this.timeseries.length > 0) {
-        let idx = this.timeseries.indexOf(this.timeseries.filter(t=>t.date == new Date(this.selectedDate).simpleDate() )[0]);
+        let idx = this.timeseries.indexOf(this.timeseries.filter(t => t.date == new Date(this.selectedDate).simpleDate())[0]);
         if (idx >= 0) {
           return idx;
         }
@@ -219,7 +234,7 @@ Vue.component('gc-timeslider', {
       this.$i18n.locale = this.currentLanguage;
     },
     startPauseVideo() {
-      
+
       console.log("startPauseVideo()");
 
       //playing -> pause
